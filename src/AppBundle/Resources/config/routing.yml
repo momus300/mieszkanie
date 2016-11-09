@@ -1,0 +1,3 @@
+mieszkanie:
+  path:     /
+  defaults: { _controller: AppBundle:Mieszkanie:index }

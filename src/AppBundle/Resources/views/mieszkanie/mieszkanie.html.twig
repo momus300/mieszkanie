@@ -1,0 +1,114 @@
+{% extends 'base.html.twig' %}
+
+{% block about %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 text-center">
+                <form class="form-group" action="" method="post">
+                    <h2 class="section-heading">Zakup mieszkania</h2>
+                    <hr class="light">
+                    <label>Wartosc mieszkania</label>
+                    <div class="form-group">
+                        <input type="text" name="wartosc_mieszkania" class="form-control"
+                               placeholder="Wartosc mieszkania" value="{{ app.request.get('wartosc_mieszkania') }}">
+                    </div>
+                    <label>Kwota kredytu</label>
+                    <div class="form-group">
+                        <input type="text" name="kwota" class="form-control" placeholder="Kwota kredytu"
+                               value="{{ app.request.get('kwota') }}">
+                    </div>
+                    <label>Ilosc lat kredytu</label>
+                    <select name="rat" class="form-control">
+                        {% for i in 15..30 %}
+                            <option value="{{ i }}"
+                                    {% if i == app.request.get('rat') %}selected="selected"{% endif %}>{{ i }}</option>
+                        {% endfor %}
+                    </select>
+                    <hr>
+                    <h2 class="section-heading">Mieskanie podnajme za</h2>
+                    <div class="form-group">
+                        <input type="text" name="kwota_podnajmu" class="form-control" placeholder="Kwota podnajmu"
+                               value="{{ app.request.get('kwota_podnajmu') }}">
+                    </div>
+                    <label>Podnajme na</label>
+                    <select name="podnajme_na_miesiecy" class="form-control">
+                        {% for i in 1..60 %}
+                            <option value="{{ i }}"
+                                    {% if i == app.request.get('podnajme_na_miesiecy') %}selected="selected"{% endif %}>{{ i }}</option>
+                        {% endfor %}
+                    </select>
+                    <hr>
+                    <h2 class="section-heading">Mieszkanie wynajmowane</h2>
+                    <label>Czynsz miesiecznie</label>
+                    <div class="form-group">
+                        <input type="text" name="kwota" class="form-control" placeholder="Czynsz miesiecznie"
+                               value="{{ app.request.get('kwota') }}">
+                    </div>
+                    <div class="form-group">
+                        <label>Ile miesiecy bede mieszkac</label>
+                        <select name="przez_okres_miesiecy" class="form-control">
+                            {% for i in 1..60 %}
+                                <option value="{{ i }}"
+                                        {% if i == app.request.get('przez_okres_miesiecy') %}selected="selected"{% endif %}>{{ i }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <button type="submit" class="page-scroll btn btn-default btn-xl sr-button">Send</button>
+                </form>
+            </div>
+            <div class="col-lg-6">
+                {% if kredyt %}
+                    <h1>Kredyt</h1>
+                    <table class="table">
+                        <thead>
+                        <th>Kredyt na lat</th>
+                        <th>Kwota kredytu do spłaty</th>
+                        <th>Kwota z MDM</th>
+                        <th>Kwota raty</th>
+                        </thead>
+                        <tbody>
+                        <td>{{ kredyt.rat }}</td>
+                        <td>{{ kredyt.kwotaKredytu|number_format(2, '.', ',') }}</td>
+                        <td>{{ kredyt.kwotaKredytuMDM|number_format(2, '.', ',') }}</td>
+                        <td>{{ kredyt.kwotaRaty|number_format(2, '.', ',') }}</td>
+                        </tbody>
+                    </table>
+
+                    <h1>Wynajem</h1>
+                    <table class="table">
+                        <thead>
+                        <th>Bede mieszkac przez mcy</th>
+                        <th>Kwota miesieczna</th>
+                        <th>Zaplace ogolem</th>
+                        </thead>
+                        <tbody>
+                        <td>{{ wynajem.przezOkresMiesiecy }}</td>
+                        <td>{{ wynajem.kwotaWynajmu|number_format(2, '.', ',') }}</td>
+                        <td>{{ wynajem.kosztWynajmuMieszkania|number_format(2, '.', ',') }}</td>
+                        </tbody>
+                    </table>
+
+                    <h1>Porownanie</h1>
+                    <table class="table">
+                        <thead>
+                        <th>W bloto na kredyt</th>
+                        <th>W bloto na wynajem</th>
+                        <th>Kwota podnajmu</th>
+                        <th>Roznica (kredyt-wynajem)</th>
+                        <th>Roznica z podnajmem (kredyt-wynajem)</th>
+                        </thead>
+                        <tbody>
+                        <td>{{ porownanie.wBlotoKredyt }}</td>
+                        <td>{{ porownanie.wBlotoWynajem }}</td>
+                        <td>{{ app.request.get('kwota_podnajmu') }}</td>
+                        <td>{{ porownanie.roznica }}</td>
+                        <td>{{ porownanie.roznica - (app.request.get('kwota_podnajmu') * app.request.get('podnajme_na_miesiecy')) }}</td>
+                        </tbody>
+                    </table>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
