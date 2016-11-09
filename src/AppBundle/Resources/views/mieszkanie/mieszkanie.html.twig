@@ -8,9 +8,11 @@
                     <h2 class="section-heading">Zakup mieszkania</h2>
                     <hr class="light">
                     <label>Wartosc mieszkania</label>
-                    <div class="form-group">
+                    <div class="form-group has-success has-feedback">
                         <input type="text" name="wartosc_mieszkania" class="form-control"
                                placeholder="Wartosc mieszkania" value="{{ app.request.get('wartosc_mieszkania') }}">
+                        <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+                        <span id="inputSuccess2Status" class="sr-only">(success)</span>
                     </div>
                     <label>Kwota kredytu</label>
                     <div class="form-group">
